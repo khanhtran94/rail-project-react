@@ -1,2 +1,7 @@
+<nav style="text-align: right">
+  <% if user_signed_in? %>
+    <%= link_to('Logout', destroy_user_session_path, method: :delete) %>
+  <% end %>
+</nav>
 <div id="root"></div>
 <%= javascript_pack_tag 'index' %>
