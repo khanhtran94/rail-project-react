@@ -13,3 +13,10 @@
  */
 // Custom bootstrap variables must be set or imported *before* bootstrap.
 @import "bootstrap";
+
+.form-signin {
+	with: 100%;
+	max-width: 330px;
+	padding: 15px;
+	margin: 0 auto;
+}
