@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link }                           from 'react-router-dom'
-import {Icon, Label, Menu, Table} from "semantic-ui-react";
+import {Button, Icon, Label, Menu, Table} from "semantic-ui-react";
 
 class TagList extends Component {
 
@@ -33,7 +33,9 @@ class TagList extends Component {
     render() {
         return (
             <div>
-                TagList
+                <h1>Tag List</h1>
+                <br/>
+                <Button href="#/tags/new" primary size='mini'>Add a New Tag</Button>
                 <Table celled>
                     <Table.Header>
                         <Table.Row>
@@ -47,7 +49,6 @@ class TagList extends Component {
                     </Table.Body>
                 </Table>
 
-                <Link to="/tags/new">Add a New Tag</Link>
             </div>
         )
     }
