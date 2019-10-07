@@ -6,7 +6,7 @@ import {
 import PostList from './components/PostList';
 import NewPost from './components/NewPost';
 import './App.css';
-import TagList from "./components/TagList";
+import TagList from "./components/Tag/TagList";
 
 function App() {
   return (
