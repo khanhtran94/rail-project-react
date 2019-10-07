@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link }                           from 'react-router-dom'
 import {Icon, Label, Menu, Table} from "semantic-ui-react";
 
 class TagList extends Component {
