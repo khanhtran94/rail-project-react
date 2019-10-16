@@ -1,10 +1,14 @@
-import React, { Component }               from 'react'
+import React, { Component } from 'react'
+import {Button, Form} from "semantic-ui-react";
 
 class TagNew extends Component {
-
-    state = {
-        name: '',
-        description: ''
+    constructor(props){
+        super(props)
+        this.state = {
+            name: '',
+            description: ''
+        }
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
     handleChange = e => {
@@ -38,18 +42,29 @@ class TagNew extends Component {
     }
 
     render() {
+        const {name, description} = this.state
+
         return (
-            <form onSubmit={this.handleSubmit.bind(this)}>
-                <p>
-                    <label htmlFor="name">Name: </label>
-                    <input type="text" name="name" onChange={this.handleChange} />
-                </p>
-                <p>
-                    <label htmlFor="description">Description: </label>
-                    <textarea name="description" id="" cols="30" rows="10" onChange={this.handleChange}></textarea>
-                </p>
-                <input type="submit" value="Create Post" />
-            </form>
+            <Form onSubmit={this.handleSubmit} style={{maxWidth: 600}}>
+                <Form.Field>
+                    <label>Name</label>
+                    <input placeholder='Name Tag'
+                           name='name'
+                           value={name}
+                           onChange={this.handleChange}
+                    />
+                </Form.Field>
+
+                <Form.Field>
+                    <label>Description</label>
+                    <input placeholder='Description Tag'
+                           name='description'
+                           value={description}
+                           onChange={this.handleChange}
+                    />
+                </Form.Field>
+                <Button type='submit'>Submit</Button>
+            </Form>
         )
     }
 }

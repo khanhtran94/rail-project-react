@@ -53,5 +53,4 @@ class TagList extends Component {
         )
     }
 }
-
 export default TagList
