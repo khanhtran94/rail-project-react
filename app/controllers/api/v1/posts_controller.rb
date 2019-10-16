@@ -10,7 +10,6 @@ module Api
       end
 
       def create
-
         if user_signed_in? 
           if post = current_user.posts.create(post_params)
             render json: post, status: :created 
