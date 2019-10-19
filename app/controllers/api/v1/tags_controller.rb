@@ -24,12 +24,14 @@ module Api
       end
 
       def destroy
-        puts __method__
         Tag.destroy(params[:id])
       end
 
       def update
         puts __method__
+        tag = Tag.find(params[:id])
+        tag.update_attributes(tag_params)
+        render json: tag
       end
 
       private
