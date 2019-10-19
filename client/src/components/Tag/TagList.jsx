@@ -4,9 +4,14 @@ import {Button, Icon, Label, Menu, Table} from "semantic-ui-react";
 
 class TagList extends Component {
 
-    state = {
-        tags: []
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            tags: []
+        }
+        this.handleDelete = this.handleDelete.bind(this)
+        this.deleteTag = this.deleteTag.bind(this)
+    }
 
     componentDidMount() {
         fetch('/api/v1/tags')
@@ -18,6 +23,29 @@ class TagList extends Component {
             })
     }
 
+    handleDelete (id){
+        let token = document.querySelector('meta[name="csrf-token"]').content;
+
+        fetch(`/api/v1/tags/${id}`,
+            {method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-Token': token
+                }
+            }).then((response) => {
+                this.deleteTag(id)
+        })
+    }
+
+    deleteTag(id){
+        debugger
+        const newTags = this.state.tags.filter((tag) => tag.id !== id)
+        this.setState({
+            tags: newTags
+        })
+    }
+
     renderTags = () => {
         return this.state.tags.map(tag => {
             return (
@@ -25,6 +53,11 @@ class TagList extends Component {
                     <Table.Cell>{tag.id}</Table.Cell>
                     <Table.Cell>{tag.name}</Table.Cell>
                     <Table.Cell>{tag.description}</Table.Cell>
+                    <Table.Cell>
+                        <Button onClick={() => this.handleDelete(tag.id)}>Delete</Button>
+                        <Button href={`#/tags/edit/${tag.id}`} >Edit</Button>
+                    </Table.Cell>
+
                 </Table.Row>
             )
         })
@@ -32,7 +65,7 @@ class TagList extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{maxWidth: 1000}}>
                 <h1>Tag List</h1>
                 <br/>
                 <Button href="#/tags/new" primary size='mini'>Add a New Tag</Button>
@@ -42,6 +75,7 @@ class TagList extends Component {
                             <Table.HeaderCell>Id</Table.HeaderCell>
                             <Table.HeaderCell>Name</Table.HeaderCell>
                             <Table.HeaderCell>Description</Table.HeaderCell>
+                            <Table.HeaderCell>Action</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>

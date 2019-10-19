@@ -8,6 +8,7 @@ import NewPost from './components/NewPost';
 import './App.css';
 import TagList from "./components/Tag/TagList";
 import TagNew from "./components/Tag/TagNew";
+import TagEdit from "./components/Tag/TagEdit";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
 
         <Route exact path="/tags" component={TagList} />
         <Route exact path="/tags/new" component={TagNew} />
+        <Route exact path="/tags/edit/:id" component={TagEdit} />
 
       </div>
     </Router>
