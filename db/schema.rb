@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_07_150546) do
+ActiveRecord::Schema.define(version: 2019_10_19_155230) do
 
   create_table "posts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
@@ -21,7 +21,24 @@ ActiveRecord::Schema.define(version: 2019_10_07_150546) do
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
+  create_table "questions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.bigint "status_id"
+    t.index ["status_id"], name: "index_questions_on_status_id"
+    t.index ["user_id"], name: "index_questions_on_user_id"
+  end
+
   create_table "roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "statuses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -30,8 +47,8 @@ ActiveRecord::Schema.define(version: 2019_10_07_150546) do
   create_table "tags", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -49,5 +66,7 @@ ActiveRecord::Schema.define(version: 2019_10_07_150546) do
   end
 
   add_foreign_key "posts", "users"
+  add_foreign_key "questions", "statuses"
+  add_foreign_key "questions", "users"
   add_foreign_key "users", "roles"
 end

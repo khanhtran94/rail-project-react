@@ -8,20 +8,24 @@
 
 
 user = User.first || User.create(email: 'test@test.com', password: 'password', password_confirmation: 'password')
-posts = [
-  {
-    title: 'My first post', 
-    content: 'The start of something special'
-  },
-  {
-    title: 'My second post', 
-    content: 'This is really getting good'
-  },
-  {
-    title: 'Oh my god, Yeah!!!',
-    content: 'Enough said.'
-  }
-]
-posts.each do |post_hash|
-  user.posts.create(post_hash)
-end
+# posts = [
+#   {
+#     title: 'My first post', 
+#     content: 'The start of something special'
+#   },
+#   {
+#     title: 'My second post', 
+#     content: 'This is really getting good'
+#   },
+#   {
+#     title: 'Oh my god, Yeah!!!',
+#     content: 'Enough said.'
+#   }
+# ]
+# posts.each do |post_hash|
+#   user.posts.create(post_hash)
+# end
+
+Status.create(name: 'ToDo')
+Status.create(name: 'Doing')
+Status.create(name: 'Done')

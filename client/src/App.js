@@ -9,6 +9,9 @@ import './App.css';
 import TagList from "./components/Tag/TagList";
 import TagNew from "./components/Tag/TagNew";
 import TagEdit from "./components/Tag/TagEdit";
+import  QuestionList from "./components/Question/QuestionList";
+import QuestionNew from "./components/Question/QuestionNew";
+import QuestionEdit from "./components/Question/QuesitonEdit";
 
 function App() {
   return (
@@ -21,6 +24,9 @@ function App() {
         <Route exact path="/tags/new" component={TagNew} />
         <Route exact path="/tags/edit/:id" component={TagEdit} />
 
+        <Route exact path="/questions" component={QuestionList} />
+        <Route exact path="/questions/new" component={QuestionNew} />
+        <Route exact path="/questions/edit/:id" component={QuestionEdit} />
       </div>
     </Router>
   );
