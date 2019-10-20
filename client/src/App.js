@@ -9,7 +9,7 @@ import './App.css';
 import TagList from "./components/Tag/TagList";
 import TagNew from "./components/Tag/TagNew";
 import TagEdit from "./components/Tag/TagEdit";
-import  QuestionList from "./components/Question/QuestionList";
+import QuestionList from "./components/Question/QuestionList";
 import QuestionNew from "./components/Question/QuestionNew";
 import QuestionEdit from "./components/Question/QuesitonEdit";
 

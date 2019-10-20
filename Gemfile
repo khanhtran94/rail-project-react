@@ -60,3 +60,5 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'pry-rails'
 gem 'will_paginate', '~> 3.1.0'
+gem 'pureapi', '~> 0.5.1'
+gem "pundit"

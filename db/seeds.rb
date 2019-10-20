@@ -29,3 +29,10 @@ user = User.first || User.create(email: 'test@test.com', password: 'password', p
 Status.create(name: 'ToDo')
 Status.create(name: 'Doing')
 Status.create(name: 'Done')
+
+Question.create(
+            name: "Hoi ve hoc phi",
+            content: "Em muon hoi lich nap hoc phi cua ki 2 nhom 2",
+            user_id: 1,
+            status_id: 1,
+)
