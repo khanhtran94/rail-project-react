@@ -1,19 +1,21 @@
 module Api
   module V1
-    class QuestionsController < ApiController
+    class QuestionsController < ApiV1Controller
       def define_entity
-        Question
+        @entity_model = Question
       end
+      
       # def index
-      #   @records = Question.all
+      #   @records = Question.joins(:user).joins(:status).select("`questions`.*, `users`.`email`, `statuses`.`name`")
       #   render json: @records
       # end
-
+      
       def show
         @record = Question.find(params["id"])
         puts @record.name
         render json: @record
       end
+      
       def create
         if user_signed_in?
           if question = Question.create(tag_params)
@@ -51,7 +53,7 @@ module Api
         params.permit(:id, :status_id, :email, :name)
       end
 
-      def base_search_params
+      def advanced_search_params
         params.permit(:name, :status_id, :email)
       end
     end

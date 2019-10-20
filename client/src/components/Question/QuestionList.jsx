@@ -11,7 +11,7 @@ class QuestionList extends Component{
     }
 
     componentDidMount() {
-        fetch('/api/v1/questions')
+        fetch('/api/v1/questions?fields=user{id,email},status{id,name}')
             .then(records => records.json())
             .then(records => {
                 this.setState({

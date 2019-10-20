@@ -62,3 +62,4 @@ gem 'pry-rails'
 gem 'will_paginate', '~> 3.1.0'
 gem 'pureapi', '~> 0.5.1'
 gem "pundit"
+gem 'jsonapi-rails'

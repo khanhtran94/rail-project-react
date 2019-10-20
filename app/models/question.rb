@@ -5,60 +5,42 @@ class Question < ApplicationRecord
 	belongs_to :status
 
 	class << self
-		def default_includes
+		def default_onlyasjons
 			puts __method__
-			[:user, :status]
-		end
 
-		def json_methods
-			puts __method__
-			[
-					:email,
-					:status_name,
-			]
-		end
-
-		def json_method_includes
-			puts __method__
-			{
-					email: :user,
-					status_name: status,
-			}
-		end
-
-		def base_search(params)
-			puts __method__
-			criterias = self
-
-			params = params.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
-			return criterias.where({})
-		end
-
-		def asjson_fields
-			puts __method__
-			{
-					user: {only: [:id, :email]},
-					status: {only: [:id, :name]},
-			}
+			[:id, :name, :user_id, :status_id, :created_at, :updated_at]
 		end
 
 		def include_entities
 			puts __method__
+
 			{
-					User => [:user],
-					Status => [:status]
+				Status => [:status],
+				User => [:user]
 			}
 		end
 
-		def of_entities
-			puts __method__
-			{
-					user: User,
-					status: Status,
-			}
-		end
 		def compcond_columns
-			[:id, :name]
-		end
+			puts __method__
+
+			[:name, :user_id, :status_id]
+    end
+
+    def of_entities
+			puts __method__
+
+			{
+          user: User,
+          Status: Status,
+
+      }
+    end
+    def advanced_search(advanced_params)
+			puts __method__
+			binding.pry
+      criterias = self
+
+      return criterias.where({})
+    end
 	end
 end
