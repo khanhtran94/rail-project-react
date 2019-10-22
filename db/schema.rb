@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_19_155230) do
+ActiveRecord::Schema.define(version: 2019_10_22_162754) do
+
+  create_table "answers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.text "conten"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_answers_on_user_id"
+  end
 
   create_table "posts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
@@ -65,6 +73,7 @@ ActiveRecord::Schema.define(version: 2019_10_19_155230) do
     t.index ["role_id"], name: "index_users_on_role_id"
   end
 
+  add_foreign_key "answers", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "questions", "statuses"
   add_foreign_key "questions", "users"
