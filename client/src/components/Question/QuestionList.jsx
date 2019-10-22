@@ -23,21 +23,18 @@ class QuestionList extends Component{
             })
     }
 
-    handlePaginationChange = (e, { activePage }) => this.setState({ activePage });
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        debugger
-        if (this.state.activePage != prevState.activePage){
-            fetch(`/api/v1/questions?fields=user{id,email},status{id,name}&page=${prevState.activePage}`)
-                .then(data => data.json())
-                .then(data => {
-                    this.setState({
-                        records: data.records
-                    })
+    handlePaginationChange = (e, { activePage }) => {
+        const {data} = this.state
+        fetch(`/api/v1/questions?fields=user{id,email},status{id,name}&page=${activePage}`)
+            .then(data => data.json())
+            .then(data => {
+                this.setState({
+                    records: data.records,
+                    activePage: activePage,
                 })
-        }
+            })
+        };
 
-    }
 
     renderQuestions = () => {
         const {records} = this.state
@@ -67,7 +64,6 @@ class QuestionList extends Component{
 
     render() {
         const {records, activePage, totalPages} = this.state
-        console.log(this.state.activePage)
         return (
             <div>
                 <Grid.Column style={{marginTop: 15}}>
@@ -75,7 +71,7 @@ class QuestionList extends Component{
                 </Grid.Column>
                 <div>
                     {this.renderQuestions()}
-                    <Pagination activePage={activePage} totalPages={totalPages} onPageChange={this.handlePaginationChange}/>
+                    <Pagination defaultActivePage={activePage} totalPages={totalPages} onPageChange={this.handlePaginationChange}/>
                 </div>
                 {/*<p>{JSON.stringify(records)}</p>*/}
             </div>

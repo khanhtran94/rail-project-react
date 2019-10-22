@@ -5,10 +5,10 @@ class ApiController < ApplicationController
   before_action :set_entity, only: [:show, :update, :destroy]
   def define_entity
     # Just default
-    binding.pry
     @entity_model = User
   end
   def index
+    puts params
     @records = core_index_filter(@entity_model)
 
     render json: { filters: filter_jsons, records: records_as_json(@records) }
