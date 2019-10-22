@@ -12,7 +12,6 @@ module Api
       end
       
       def create
-        binding.pry
         if user_signed_in?
           if question = current_user.questions.create(question_params)
             render json: question, status: 200
@@ -38,7 +37,7 @@ module Api
       protected
 
       def question_params
-        params.require(:question).permit(:name,:content, :id, :user_id, :status_id)
+        params.require(:question).permit(:name,:content, :id, :user_id, :status_id, :limit)
       end
 
       def entity_params
