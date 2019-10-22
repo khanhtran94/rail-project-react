@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Input, Grid, Segment,Wrapper } from 'semantic-ui-react'
+import { Grid, Button, Feed} from 'semantic-ui-react'
 
 class QuestionList extends Component{
 
@@ -25,33 +25,22 @@ class QuestionList extends Component{
 
         return records.map(record => {
             return (
-                <div key={record["id"]}>
-                    <Grid>
-                        <Grid.Row>
-                            <Grid.Column width={2}>
-                                <p>id: {record["id"]}</p>
-                            </Grid.Column>
-                            <Grid.Column width={5}>
-                                <p>name: {record["name"]}</p>
-                            </Grid.Column>
-                        </Grid.Row>
-
-                        <Grid.Row>
-                            <Grid.Column width={2}>
-                                <p>Status: {record.status["name"]}</p>
-                            </Grid.Column>
-                            <Grid.Column width={10}>
-                                <p>Email: {record.user["email"]}</p>
-                            </Grid.Column>
-                        </Grid.Row>
-
-                        <Grid.Row>
-                            <Grid.Column width={10}>
-                                <p>content: {record["content"]}</p>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-
+                <div key={record["id"]} style={{marginTop: 10}}>
+                    <Feed>
+                        <Feed.Event>
+                            <Feed.Label image='https://react.semantic-ui.com/images/avatar/small/joe.jpg' />
+                            <Feed.Content>
+                                <Feed.Summary>
+                                    <Feed.User style={{marginRight: 10}}>{record.user["email"]}</Feed.User>
+                                    <Feed.User>{record["name"]}</Feed.User>
+                                    <Feed.Label style={{color: 'green'}}>{record.status["name"]}</Feed.Label>
+                                </Feed.Summary>
+                                <Feed.Extra text>
+                                    {record["content"]}
+                                </Feed.Extra>
+                            </Feed.Content>
+                        </Feed.Event>
+                    </Feed>
                 </div>
             )
         })
@@ -61,6 +50,9 @@ class QuestionList extends Component{
         const {records} = this.state
         return (
             <div>
+                <Grid.Column style={{marginTop: 15}}>
+                    <Button href="#/questions/new" primary size='mini' content={'New Question'} icon="add"/>
+                </Grid.Column>
                 {this.renderQuestions()}
                 {/*<p>{JSON.stringify(records)}</p>*/}
             </div>

@@ -3,6 +3,7 @@ class Question < ApplicationRecord
 	#define relations
 	belongs_to :user
 	belongs_to :status
+	has_many :answers
 
 	class << self
 		def default_onlyasjons

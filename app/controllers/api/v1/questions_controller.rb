@@ -4,12 +4,7 @@ module Api
       def define_entity
         @entity_model = Question
       end
-      
-      # def index
-      #   @records = Question.joins(:user).joins(:status).select("`questions`.*, `users`.`email`, `statuses`.`name`")
-      #   render json: @records
-      # end
-      
+
       def show
         @record = Question.find(params["id"])
         puts @record.name
@@ -17,8 +12,9 @@ module Api
       end
       
       def create
+        binding.pry
         if user_signed_in?
-          if question = Question.create(tag_params)
+          if question = current_user.questions.create(question_params)
             render json: question, status: 200
           else
             render json: question.errors, status: 400
@@ -42,19 +38,19 @@ module Api
       protected
 
       def question_params
-        params.require(:question).permit(:name,:description, :id)
+        params.require(:question).permit(:name,:content, :id, :user_id, :status_id)
       end
 
       def entity_params
-        params.require(:question).permit(:name, :status_id, :email)
+        params.require(:question).permit(:name, :status_id, :email, :content, :status_id)
       end
 
       def search_params
-        params.permit(:id, :status_id, :email, :name)
+        params.permit(:id, :status_id, :email, :name, :content, :status_id)
       end
 
       def advanced_search_params
-        params.permit(:name, :status_id, :email)
+        params.permit(:name, :status_id, :email, :content, :status_id)
       end
     end
   end
