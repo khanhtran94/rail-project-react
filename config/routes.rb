@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       resources :posts
       resources :tags
       resources :questions
+      resources :answers
     end 
   end
 end
