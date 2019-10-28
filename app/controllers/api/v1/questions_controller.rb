@@ -13,7 +13,7 @@ module Api
         puts __method__
         question = Question.find(params[:id])
         question.update_attributes(question_params)
-        render json: tag
+        render json: question
       end
 
       protected

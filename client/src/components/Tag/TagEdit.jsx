@@ -24,7 +24,7 @@ class TagEdit extends Component{
 
     handleEdit = (e) => {
         e.preventDefault();
-        let data = {post: this.state};
+        // let data = {post: this.state};
         const id = this.props.match.params.id
         let token = document.querySelector('meta[name="csrf-token"]').content;
         fetch(`/api/v1/tags/${id}`, {
