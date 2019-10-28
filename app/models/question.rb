@@ -14,10 +14,10 @@ class Question < ApplicationRecord
 
 		def include_entities
 			puts __method__
-
-			{
+			# trong dau [] la dung de chi moi quan he cua model
+			{ User => [:user],
 				Status => [:status],
-				User => [:user]
+				Answer => [:answers],
 			}
 		end
 
@@ -33,12 +33,12 @@ class Question < ApplicationRecord
 			{
           user: User,
           Status: Status,
+					Answer: Answer,
 
       }
     end
     def advanced_search(advanced_params)
 			puts __method__
-			binding.pry
       criterias = self
 
       return criterias.where({})

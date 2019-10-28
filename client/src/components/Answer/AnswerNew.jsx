@@ -62,7 +62,6 @@ class AnswerNew extends Component{
         const {record} = this.state
         return (
             <div key={record["id"]}>
-                {JSON.stringify(record)}
                 <Feed>
                     <Feed.Event>
                         <Feed.Label image='https://react.semantic-ui.com/images/avatar/small/joe.jpg' />

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Grid, Button, Feed,Pagination} from 'semantic-ui-react'
+import { Grid, Button, Feed,Pagination, Comment, Header, Form} from 'semantic-ui-react'
 
 class QuestionList extends Component{
 
@@ -11,10 +11,11 @@ class QuestionList extends Component{
             totalPages: 50,
         }
         this.handlePaginationChange = this.handlePaginationChange.bind(this)
+        this.handleConfirm = this.handleConfirm.bind(this)
     }
 
     componentDidMount() {
-        fetch('/api/v1/questions?fields=user{id,email},status{id,name}')
+        fetch('/api/v1/questions?fields=user{id,email},status{name},answers{id,content}')
             .then(data => data.json())
             .then(data => {
                 this.setState({
@@ -23,9 +24,34 @@ class QuestionList extends Component{
             })
     }
 
+    handleConfirm = (e, {key}) => {
+        e.preventDefault();
+
+        let token = document.querySelector('meta[name="csrf-token"]').content;
+        const id = e.currentTarget.id
+
+        fetch(`/api/v1/questions/${id}`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json",
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-Token': token
+            },
+            redirect: "error",
+            body: JSON.stringify({status_id: 3, id: id})
+        })
+            .then(resp => {
+                resp.json()
+            })
+            .then(question => {
+                window.location.reload();
+
+            });
+    }
+
     handlePaginationChange = (e, { activePage }) => {
         const {data} = this.state
-        fetch(`/api/v1/questions?fields=user{id,email},status{id,name}&page=${activePage}`)
+        fetch(`/api/v1/questions?fields=user{id,email},status{id,name},answers{id,content}&page=${activePage}`)
             .then(data => data.json())
             .then(data => {
                 this.setState({
@@ -38,7 +64,7 @@ class QuestionList extends Component{
 
     renderQuestions = () => {
         const {records} = this.state
-
+        console.log(records)
         return records.map(record => {
             return (
                 <div key={record["id"]} style={{marginTop: 10}}>
@@ -57,6 +83,28 @@ class QuestionList extends Component{
                             </Feed.Content>
                         </Feed.Event>
                     </Feed>
+                    {this.renderAnswers(record.answers)}
+                    {record.status["name"] !== 'Done' && <Button size='mini' icon="like" onClick={this.handleConfirm} id={record["id"]}></Button>}
+                </div>
+            )
+        })
+    }
+
+    renderAnswers = (answers) => {
+        return answers.map(answer => {
+            return (
+                <div key={answer["id"]}>
+                    <Comment.Group size="small">
+                        <Comment>
+                            <Comment.Avatar as='a' src='https://react.semantic-ui.com/images/avatar/small/joe.jpg' />
+                            <Comment.Content>
+                                <Comment.Metadata>
+                                    <span>Answer</span>
+                                </Comment.Metadata>
+                                <Comment.Text>{answer.content}</Comment.Text>
+                            </Comment.Content>
+                        </Comment>
+                    </Comment.Group>
                 </div>
             )
         })
