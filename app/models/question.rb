@@ -32,8 +32,8 @@ class Question < ApplicationRecord
 
 			{
           user: User,
-          Status: Status,
-					Answer: Answer,
+          status: Status,
+					answer: Answer,
 
       }
     end
