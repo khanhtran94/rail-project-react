@@ -8,7 +8,6 @@ class ApiController < ApplicationController
     @entity_model = User
   end
   def index
-    puts params
     @records = core_index_filter(@entity_model)
 
     render json: { filters: filter_jsons, records: records_as_json(@records) }
@@ -22,6 +21,7 @@ class ApiController < ApplicationController
   # POST /api/v02/entity_names(s)
   def create
     puts params
+    binding.pry
     @record = @entity_model.new2nd(entity_params, current_user)
 
     if @record.save

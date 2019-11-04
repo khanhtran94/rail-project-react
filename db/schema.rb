@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_23_195717) do
+ActiveRecord::Schema.define(version: 2019_11_04_175152) do
 
   create_table "answers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "content"
@@ -59,6 +59,8 @@ ActiveRecord::Schema.define(version: 2019_10_23_195717) do
     t.text "description"
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_tags_on_user_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -80,5 +82,6 @@ ActiveRecord::Schema.define(version: 2019_10_23_195717) do
   add_foreign_key "posts", "users"
   add_foreign_key "questions", "statuses"
   add_foreign_key "questions", "users"
+  add_foreign_key "tags", "users"
   add_foreign_key "users", "roles"
 end

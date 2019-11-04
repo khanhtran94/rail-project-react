@@ -22,7 +22,6 @@ class  QuestionNew extends Component{
 
     handleSubmit = (e) => {
         e.preventDefault();
-        let data = {post: this.state};
         let token = document.querySelector('meta[name="csrf-token"]').content;
         fetch('api/v1/questions', {
             method: 'POST',
