@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Button, Form, TextArea,Dropdown} from "semantic-ui-react";
+import {Button, Form, TextArea,Select} from "semantic-ui-react";
 
 class  QuestionNew extends Component{
     constructor(props) {
@@ -28,10 +28,9 @@ class  QuestionNew extends Component{
             })
     }
 
-    handleChange = (e, {value}) => {
+    handleChange = (e) => {
         let newValue = e.target.value;
         let key = e.target.name;
-        console.log(value)
         this.setState({
             [key]: newValue
         });
@@ -59,9 +58,16 @@ class  QuestionNew extends Component{
     }
 
     handleOnAdd = (e, {value}) => {
-        console.log(value)
-        debugger
-        const newTag = {key: e.target.value, text: e.target.value, value: e.target.value}
+        const {optionTagArray} = this.state
+
+        const newTag = optionTagArray.find(function (e) {
+            console.log(e.value)
+            console.log(value)
+            if (e.value == value){
+                return e
+            }
+        })
+        console.log(newTag)
         this.setState({
             tag_id: [...this.state.tag_id, newTag]
         })
@@ -73,13 +79,12 @@ class  QuestionNew extends Component{
         return (
             <Form onSubmit={this.handleSubmit} style={{maxWidth: 600}}>
                 <Form.Field>
-                    <Dropdown placeholder='Tags'
+                    <Select placeholder='Tags'
                               fluid multiple selection
                               options={optionTagArray}
-                              value={tag_id}
-                              onChange={(e, optionsObj) => this.handleOnAdd(optionsObj.value)}
+                              onChange={this.handleOnAdd}
                     >
-                    </Dropdown>
+                    </Select>
                 </Form.Field>
                 <Form.Field>
                     <label>Name:</label>
