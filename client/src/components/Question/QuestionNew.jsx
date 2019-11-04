@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Button, Form, TextArea} from "semantic-ui-react";
+import {Button, Form, TextArea,Dropdown} from "semantic-ui-react";
 
 class  QuestionNew extends Component{
     constructor(props) {
@@ -9,12 +9,29 @@ class  QuestionNew extends Component{
             content: '',
             name: '',
             status_id: 1,
+            tag_id: [],
+            optionTagArray: [],
         }
-        this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this),
+        this.handleOnAdd = this.handleOnAdd.bind(this)
     }
-    handleChange = e => {
+
+    componentDidMount() {
+        fetch('/api/v1/tags')
+            .then(data => data.json())
+            .then(data => {
+                const existingTag = []
+                data.records.map(tag => existingTag.push({key: tag.id, value: tag.name,  text: tag.name}))
+                this.setState({
+                    optionTagArray: existingTag
+                })
+            })
+    }
+
+    handleChange = (e, {value}) => {
         let newValue = e.target.value;
         let key = e.target.name;
+        console.log(value)
         this.setState({
             [key]: newValue
         });
@@ -41,11 +58,29 @@ class  QuestionNew extends Component{
             });
     }
 
+    handleOnAdd = (e, {value}) => {
+        console.log(value)
+        debugger
+        const newTag = {key: e.target.value, text: e.target.value, value: e.target.value}
+        this.setState({
+            tag_id: [...this.state.tag_id, newTag]
+        })
+    }
+
     render() {
-        const {content, name} = this.state
+        const {content, name, tag_id, optionTagArray} = this.state
 
         return (
             <Form onSubmit={this.handleSubmit} style={{maxWidth: 600}}>
+                <Form.Field>
+                    <Dropdown placeholder='Tags'
+                              fluid multiple selection
+                              options={optionTagArray}
+                              value={tag_id}
+                              onChange={(e, optionsObj) => this.handleOnAdd(optionsObj.value)}
+                    >
+                    </Dropdown>
+                </Form.Field>
                 <Form.Field>
                     <label>Name:</label>
                     <input

@@ -5,6 +5,10 @@ module Api
         @entity_model = Question
       end
 
+      def create
+        puts params
+      end
+
       def destroy
         Question.destroy(params[:id])
       end
@@ -19,19 +23,20 @@ module Api
       protected
 
       def question_params
-        params.require(:question).permit(:name,:content, :id, :user_id, :status_id, :limit)
+        binding.pry
+        params.require(:question).permit(:name,:content, :id, :user_id, :status_id, :limit, :tag_id)
       end
 
       def entity_params
-        params.require(:question).permit(:name, :status_id, :email, :content, :status_id)
+        params.require(:question).permit(:name, :status_id, :email, :content, :status_id, :tag_id)
       end
 
       def search_params
-        params.permit(:id, :status_id, :email, :name, :content, :status_id)
+        params.permit(:id, :status_id, :email, :name, :content, :status_id, :tag_id)
       end
 
       def advanced_search_params
-        params.permit(:name, :status_id, :email, :content, :status_id)
+        params.permit(:name, :status_id, :email, :content, :status_id, :tag_id)
       end
     end
   end
