@@ -7,8 +7,17 @@ module Api
 
       def create
         puts params
-        binding.pry
         @record = @entity_model.new2nd(entity_params, current_user)
+        if @record.save
+          params["tag_id"].each do |tag_id|
+            question_tag = QuestionTag.new(question_id: @record.id, tag_id: tag_id["id"])
+            question_tag.save
+          end
+          render json: record_as_json(@record), status: :created
+        else
+          render json: @record.errors.full_messages, status: :unprocessable_entity
+        end
+
       end
 
       def destroy
@@ -25,7 +34,6 @@ module Api
       protected
 
       def question_params
-        binding.pry
         params.require(:question).permit(:name,:content, :id, :user_id, :status_id, :limit, :tag_id)
       end
 

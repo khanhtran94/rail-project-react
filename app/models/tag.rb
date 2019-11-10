@@ -1,7 +1,8 @@
 class Tag < ApplicationRecord
 
   #define relations
-  has_many :questions
+  has_many :question_tags
+  has_many :questions, :through => :question_tags
 
   class << self
     def default_onlyasjsons

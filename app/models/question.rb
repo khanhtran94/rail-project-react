@@ -4,11 +4,11 @@ class Question < ApplicationRecord
 	belongs_to :user
 	belongs_to :status
 	has_many :answers
+	has_many :question_tags
+	has_many :tags, :through => :question_tags
 
 	class << self
 		def default_onlyasjons
-			puts __method__
-
 			[:id, :name, :user_id, :status_id, :created_at, :updated_at]
 		end
 
@@ -18,27 +18,25 @@ class Question < ApplicationRecord
 			{ User => [:user],
 				Status => [:status],
 				Answer => [:answers],
+				Tag => [:tags]
 			}
 		end
 
 		def compcond_columns
-			puts __method__
 
 			[:name, :user_id, :status_id]
     end
 
     def of_entities
-			puts __method__
-
 			{
           user: User,
           status: Status,
 					answer: Answer,
+					tags: Tag,
 
       }
     end
     def advanced_search(advanced_params)
-			puts __method__
       criterias = self
 
       return criterias.where({})

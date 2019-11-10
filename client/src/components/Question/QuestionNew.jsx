@@ -21,7 +21,7 @@ class  QuestionNew extends Component{
             .then(data => data.json())
             .then(data => {
                 const existingTag = []
-                data.records.map(tag => existingTag.push({key: tag.id, value: tag.name,  text: tag.name}))
+                data.records.map(tag => existingTag.push({id: tag.id, value: tag.name,  text: tag.name}))
                 this.setState({
                     optionTagArray: existingTag
                 })
@@ -71,7 +71,7 @@ class  QuestionNew extends Component{
     }
 
     render() {
-        const {content, name, tag_id, optionTagArray} = this.state
+        const {content, name, optionTagArray} = this.state
 
         return (
             <Form onSubmit={this.handleSubmit} style={{maxWidth: 600}}>

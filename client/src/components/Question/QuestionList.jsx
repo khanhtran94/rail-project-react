@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Grid, Button, Feed,Pagination, Comment, Header, Form} from 'semantic-ui-react'
+import { Grid, Button, Feed,Pagination, Comment, Label} from 'semantic-ui-react'
 
 class QuestionList extends Component{
 
@@ -15,7 +15,7 @@ class QuestionList extends Component{
     }
 
     componentDidMount() {
-        fetch('/api/v1/questions?fields=user{id,email},status{name},answers{id,content}')
+        fetch('/api/v1/questions?fields=user{id,email},status{name},answers{id,content},tags{id,name}')
             .then(data => data.json())
             .then(data => {
                 this.setState({
@@ -61,6 +61,15 @@ class QuestionList extends Component{
             })
         };
 
+    renderTags = (tags) => {
+        return tags.map(tag => {
+            return (
+
+                <Label as='a' tag size="tiny">{tag.name}</Label>
+            )
+        })
+    }
+
 
     renderQuestions = () => {
         const {records} = this.state
@@ -76,6 +85,7 @@ class QuestionList extends Component{
                                     <Feed.User style={{marginRight: 10}}>{record.user["email"]}</Feed.User>
                                     <Feed.User>{record["name"]}</Feed.User>
                                     <Feed.Label style={{color: 'green'}}>{record.status["name"]}</Feed.Label>
+                                    <Feed.Label>{this.renderTags(record.tags)}</Feed.Label>
                                 </Feed.Summary>
                                 <Feed.Extra text>
                                     {record["content"]}
