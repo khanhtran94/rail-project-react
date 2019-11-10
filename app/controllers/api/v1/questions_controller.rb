@@ -7,6 +7,8 @@ module Api
 
       def create
         puts params
+        binding.pry
+        @record = @entity_model.new2nd(entity_params, current_user)
       end
 
       def destroy

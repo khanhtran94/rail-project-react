@@ -20,8 +20,6 @@ class ApiController < ApplicationController
 
   # POST /api/v02/entity_names(s)
   def create
-    puts params
-    binding.pry
     @record = @entity_model.new2nd(entity_params, current_user)
 
     if @record.save

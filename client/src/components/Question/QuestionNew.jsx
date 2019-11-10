@@ -59,15 +59,12 @@ class  QuestionNew extends Component{
 
     handleOnAdd = (e, {value}) => {
         const {optionTagArray} = this.state
-
+        // duyet toan bo value, day vao 1 mang, su dung for cho optionTagArray, value.each tim tung phan tu cua value, day vao 1 array, luu vao state
         const newTag = optionTagArray.find(function (e) {
-            console.log(e.value)
-            console.log(value)
-            if (e.value == value){
+            if (e.value == value[value.length - 1]){
                 return e
             }
         })
-        console.log(newTag)
         this.setState({
             tag_id: [...this.state.tag_id, newTag]
         })
