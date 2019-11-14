@@ -7,7 +7,10 @@ class QuestionEdit extends Component{
         this.state = {
             record: undefined,
             content: undefined,
+            question_id: this.props.match.params.id,
         }
+        this.handleSubmit = this.handleSubmit.bind(this)
+
     }
 
     componentDidMount() {
@@ -43,7 +46,6 @@ class QuestionEdit extends Component{
 
     renderQuestions = () => {
         const {record} = this.state
-        console.log(record)
         return (
             <div key={record["id"]} style={{marginTop: 10}}>
                 <Feed>
@@ -73,17 +75,57 @@ class QuestionEdit extends Component{
         return tags.map(tag => {
             return (
 
-                <Label as='a' tag size="tiny">{tag.name}</Label>
+                <Label as='a' tag size="tiny" key={tag.id}>{tag.name}</Label>
             )
         })
     }
+    handleChange = e => {
+        let newValue = e.target.value;
+        let key = e.target.name;
+        this.setState({
+            [key]: newValue
+        });
+    }
 
+    handleSubmit = (e) => {
+        e.preventDefault();
+        let token = document.querySelector('meta[name="csrf-token"]').content;
+
+        fetch('/api/v1/answers',{
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-Token': token
+            },
+            redirect: "error",
+            body: JSON.stringify(this.state)
+        })
+          .then(resp => {
+              resp.json()
+          })
+          .then(question => {
+              window.location.reload();
+          });
+    }
+    // render ra form de submit
     render() {
         const {record, content} = this.state
         return(
             <div>
                 <h1>Question</h1>
                 {record && this.renderQuestions()}
+                <Form onSubmit={this.handleSubmit}>
+                    <Form.Field>
+                        <TextArea
+                          placeholder='Tell us more'
+                          onChange={this.handleChange}
+                          value={content}
+                          name="content"
+                        />
+                    </Form.Field>
+                    <Button type='submit'>Answer</Button>
+                </Form>
             </div>
         )
     }
