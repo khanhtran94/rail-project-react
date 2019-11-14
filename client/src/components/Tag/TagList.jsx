@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
 import { Link }                           from 'react-router-dom'
-import {Button, Icon, Label, Menu, Table} from "semantic-ui-react";
+import {Button, Icon, Label, Menu, Table, Pagination} from "semantic-ui-react";
 
 class TagList extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            tags: []
+            tags: [],
+            records: [],
+            activePage: 1,
+            totalPages: 50,
         }
         this.handleDelete = this.handleDelete.bind(this)
         this.deleteTag = this.deleteTag.bind(this)
@@ -15,10 +18,10 @@ class TagList extends Component {
 
     componentDidMount() {
         fetch('/api/v1/tags')
-            .then(tags => tags.json())
-            .then(tags => {
+            .then(data => data.json())
+            .then(data => {
                 this.setState({
-                    tags: tags
+                    records: data.records
                 })
             })
     }
@@ -47,15 +50,17 @@ class TagList extends Component {
     }
 
     renderTags = () => {
-        return this.state.tags.map(tag => {
+        const {records} = this.state
+        console.log(records)
+        return records.map(record => {
             return (
-                <Table.Row key={tag.id}>
-                    <Table.Cell>{tag.id}</Table.Cell>
-                    <Table.Cell>{tag.name}</Table.Cell>
-                    <Table.Cell>{tag.description}</Table.Cell>
+                <Table.Row key={record["id"]}>
+                    <Table.Cell>{record["id"]}</Table.Cell>
+                    <Table.Cell>{record["name"]}</Table.Cell>
+                    <Table.Cell>{record["description"]}</Table.Cell>
                     <Table.Cell>
-                        <Button onClick={() => this.handleDelete(tag.id)}>Delete</Button>
-                        <Button href={`#/tags/edit/${tag.id}`} >Edit</Button>
+                        <Button onClick={() => this.handleDelete(record["id"])}>Delete</Button>
+                        <Button href={`#/tags/edit/${record["id"]}`} >Edit</Button>
                     </Table.Cell>
 
                 </Table.Row>
