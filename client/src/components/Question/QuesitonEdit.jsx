@@ -84,7 +84,6 @@ class QuestionEdit extends Component{
             <div>
                 <h1>Question</h1>
                 {record && this.renderQuestions()}
-                <p>{JSON.stringify(record)}</p>
             </div>
         )
     }

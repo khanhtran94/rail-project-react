@@ -64,3 +64,5 @@ gem 'pureapi', '~> 0.5.1'
 gem "pundit"
 gem 'jsonapi-rails'
 gem 'rack-cors'
+gem 'sidekiq'
+gem 'sidekiq-cron'
