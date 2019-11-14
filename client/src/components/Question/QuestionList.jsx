@@ -51,7 +51,7 @@ class QuestionList extends Component{
 
     handlePaginationChange = (e, { activePage }) => {
         const {data} = this.state
-        fetch(`/api/v1/questions?fields=user{id,email},status{id,name},answers{id,content}&page=${activePage}`)
+        fetch(`/api/v1/questions?fields=user{id,email},status{id,name},answers{id,content},tags{id,name}&page=${activePage}`)
             .then(data => data.json())
             .then(data => {
                 this.setState({
