@@ -1,0 +1,6 @@
+auto ansert worker in today:
+  cron: "*/3 * * * *"
+  class: "AutoAnswerWorker"
+  queue: rails_react
+  retry: 1
+  backtrace: true

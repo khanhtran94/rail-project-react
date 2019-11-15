@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
-import {Feed, Pagination, Grid, Button} from "semantic-ui-react";
+import {Feed, Pagination, Grid, Button, Comment} from "semantic-ui-react";
+
+export const FIELD = 'user{id,email},status{id,name},tags{id,name},answers{id,content}'
 
 class AnswerList extends Component{
     constructor(props){
@@ -16,7 +18,7 @@ class AnswerList extends Component{
 
     handlePaginationChange = (e, { activePage }) => {
         const {data} = this.state
-        fetch(`/api/v1/questions?fields=user{id,email},status{id,name}&compconds[status_id.in][]=1&page=${activePage}`)
+        fetch(`/api/v1/questions?fields=${FIELD}&compconds[status_id.in][]=1&&compconds[status_id.in][]=2&page=${activePage}`)
             .then(data => data.json())
             .then(data => {
                 this.setState({
@@ -29,7 +31,7 @@ class AnswerList extends Component{
     };
 
     componentDidMount() {
-        fetch('/api/v1/questions?fields=user{id,email},status{id,name}&compconds[status_id.in][]=1&&compconds[status_id.in][]=2')
+        fetch(`/api/v1/questions?fields=${FIELD}&compconds[status_id.in][]=1&&compconds[status_id.in][]=2`)
             .then(data => data.json())
             .then(data => {
                 this.setState({
@@ -61,7 +63,28 @@ class AnswerList extends Component{
                             </Feed.Content>
                         </Feed.Event>
                     </Feed>
+                    {this.renderAnswers(record.answers)}
                 </div>
+            )
+        })
+    }
+
+    renderAnswers = (answers) => {
+        return answers.map(answer => {
+            return (
+              <div key={answer["id"]}>
+                  <Comment.Group size="small">
+                      <Comment>
+                          <Comment.Avatar as='a' src='https://react.semantic-ui.com/images/avatar/small/joe.jpg'/>
+                          <Comment.Content>
+                              <Comment.Metadata>
+                                  <span>Answer</span>
+                              </Comment.Metadata>
+                              <Comment.Text>{answer.content}</Comment.Text>
+                          </Comment.Content>
+                      </Comment>
+                  </Comment.Group>
+              </div>
             )
         })
     }

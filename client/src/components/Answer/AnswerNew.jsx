@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { Button, Feed, Form, TextArea } from 'semantic-ui-react'
+export const FIELD = 'user{id,email},status{name},answers{id,content},tags{id,name}'
 
 // load noi dung cau hoi, va name
 // hien thi text area de tra loi
