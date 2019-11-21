@@ -94,7 +94,7 @@ class  QuestionNew extends Component{
                 </Form.Field>
 
                 <Form.Field>
-                    <label>Name:</label>
+                    <label>Content:</label>
                     <TextArea
                         placeholder={'Content question'}
                         name='content'

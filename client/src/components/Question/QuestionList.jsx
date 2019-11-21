@@ -102,6 +102,7 @@ class QuestionList extends Component{
     }
 
     renderAnswers = (answers) => {
+        debugger
         return answers.map(answer => {
             return (
                 <div key={answer["id"]}>
@@ -110,9 +111,9 @@ class QuestionList extends Component{
                             <Comment.Avatar as='a' src='https://react.semantic-ui.com/images/avatar/small/joe.jpg'/>
                             <Comment.Content>
                                 <Comment.Metadata>
-                                    <span>Answer</span>
+                                    {/*<span>Answer</span>*/}
                                 </Comment.Metadata>
-                                <Comment.Text>{answer.content}</Comment.Text>
+                                {answer.content && answer.content.includes("edit") ? <Comment.Text><a href={answer.content}>Link Answer</a></Comment.Text> : <Comment.Text>{answer.content}</Comment.Text>}
                             </Comment.Content>
                         </Comment>
                     </Comment.Group>

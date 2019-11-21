@@ -1,5 +1,5 @@
 auto ansert worker in today:
-  cron: "*/3 * * * *"
+  cron: "*/10s * * * *"
   class: "AutoAnswerWorker"
   queue: rails_react
   retry: 1
