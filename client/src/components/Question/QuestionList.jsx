@@ -102,7 +102,6 @@ class QuestionList extends Component{
     }
 
     renderAnswers = (answers) => {
-        debugger
         return answers.map(answer => {
             return (
                 <div key={answer["id"]}>
