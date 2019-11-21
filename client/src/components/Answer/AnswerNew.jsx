@@ -141,7 +141,7 @@ class AnswerNew extends Component{
                                   fluid multiple selection
                                   options={optionTagArray}
                                   onChange={this.handleOnAdd}
-                                  style={{marginBottom: 10}}
+                                  style={{marginBottom: 10, marginTop: 10}}
                         >
                         </Dropdown>
                         <TextArea
