@@ -164,14 +164,7 @@ class QuestionEdit extends Component{
             <div>
                 <h1>Question</h1>
                 <Form onSubmit={this.handleSubmit}>
-                    {record && record.status["name"] !== 'Done' && <Form.Field>
-                        <Dropdown placeholder='Tags'
-                                fluid multiple selection
-                                options={optionTagArray}
-                                onChange={this.handleOnAdd}
-                        >
-                        </Dropdown>
-                    </Form.Field>}
+
                     {record && this.renderQuestions()}
                     {record && record.status["name"] !== 'Done' && <Form.Field>
                         <TextArea

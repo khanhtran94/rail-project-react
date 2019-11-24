@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import { Grid, Button, Feed,Pagination, Comment, Label} from 'semantic-ui-react'
 
-class QuestionList extends Component{
+export const FIELD = 'user{id,email},status{name},answers{id,content},tags{id,name}'
 
+class QuestionList extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -15,7 +16,7 @@ class QuestionList extends Component{
     }
 
     componentDidMount() {
-        fetch('/api/v1/questions?fields=user{id,email},status{name},answers{id,content},tags{id,name}')
+        fetch(`/api/v1/questions?fields=${FIELD}`)
             .then(data => data.json())
             .then(data => {
                 this.setState({
@@ -51,7 +52,7 @@ class QuestionList extends Component{
 
     handlePaginationChange = (e, { activePage }) => {
         const {data} = this.state
-        fetch(`/api/v1/questions?fields=user{id,email},status{id,name},answers{id,content},tags{id,name}&page=${activePage}`)
+        fetch(`/api/v1/questions?fields=${FIELD}&page=${activePage}`)
             .then(data => data.json())
             .then(data => {
                 this.setState({
@@ -65,7 +66,7 @@ class QuestionList extends Component{
         return tags.map(tag => {
             return (
 
-                <Label as='a' tag size="tiny">{tag.name}</Label>
+                <Label as='a' tag size="tiny" key={tag.id}>{tag.name}</Label>
             )
         })
     }
@@ -94,7 +95,7 @@ class QuestionList extends Component{
                         </Feed.Event>
                     </Feed>
                     {this.renderAnswers(record.answers)}
-                    {record.status["name"] !== 'Done' && <Button size='mini' icon="like" onClick={this.handleConfirm} id={record["id"]}></Button>}
+                    <Button size='mini' icon="arrow alternate circle right outline" href={`#/questions/edit/${record["id"]}`}  id={record["id"]}></Button>
                 </div>
             )
         })
@@ -106,12 +107,12 @@ class QuestionList extends Component{
                 <div key={answer["id"]}>
                     <Comment.Group size="small">
                         <Comment>
-                            <Comment.Avatar as='a' src='https://react.semantic-ui.com/images/avatar/small/joe.jpg' />
+                            <Comment.Avatar as='a' src='https://react.semantic-ui.com/images/avatar/small/joe.jpg'/>
                             <Comment.Content>
                                 <Comment.Metadata>
-                                    <span>Answer</span>
+                                    {/*<span>Answer</span>*/}
                                 </Comment.Metadata>
-                                <Comment.Text>{answer.content}</Comment.Text>
+                                {answer.content && answer.content.includes("edit") ? <Comment.Text><a href={answer.content}>Link Answer</a></Comment.Text> : <Comment.Text>{answer.content}</Comment.Text>}
                             </Comment.Content>
                         </Comment>
                     </Comment.Group>

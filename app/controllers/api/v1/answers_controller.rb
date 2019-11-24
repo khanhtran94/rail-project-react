@@ -7,7 +7,6 @@ module Api
 
       def create
         @record = @entity_model.new2nd(entity_params, current_user)
-
         if @record.save
           question = Question.find params["question_id"]
           question.status_id = 2

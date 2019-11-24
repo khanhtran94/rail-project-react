@@ -15,13 +15,17 @@ import QuestionEdit from "./components/Question/QuesitonEdit";
 import AnswerList from "./components/Answer/AnswerList";
 import AnswerEdit from "./components/Answer/AnswerEdit";
 import AnswerNew from "./components/Answer/AnswerNew";
+import UserList from "./components/User/UserList";
+import UserEdit from "./components/User/UserEdit";
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <Route exact path="/" component={PostList} />
-        <Route exact path="/posts/new" component={NewPost} />
+        <Route exact path="/" component={QuestionList} />
+
+        <Route exact path="/users" component={UserList} />
+        <Route exact path="/users/edit/:id" component={UserEdit} />
 
         <Route exact path="/tags" component={TagList} />
         <Route exact path="/tags/new" component={TagNew} />

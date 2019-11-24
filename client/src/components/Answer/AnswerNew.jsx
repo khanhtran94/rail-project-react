@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import { Button, Feed, Form, TextArea } from 'semantic-ui-react'
+import {Button, Feed, Form, Label, TextArea, Dropdown, Comment} from 'semantic-ui-react'
+export const FIELD = 'user{id,email},status{name},answers{id,content},tags{id,name}'
 
 // load noi dung cau hoi, va name
 // hien thi text area de tra loi
@@ -11,7 +12,9 @@ class AnswerNew extends Component{
             record: undefined,
             content: undefined,
             question_id: this.props.match.params["question_id"],
-            status_id: 2
+            status_id: 2,
+            optionTagArray: [],
+            tag_id: [],
         }
         this.handleSubmit = this.handleSubmit.bind(this)
     }
@@ -19,13 +22,22 @@ class AnswerNew extends Component{
     componentDidMount() {
         const question_id = this.props.match.params["question_id"]
 
-        fetch(`/api/v1/questions/${question_id}`)
+        fetch(`/api/v1/questions/${question_id}?fields=user{id,email},status{id,name},answers{id,content},tags{id,name}`)
             .then(data => data.json())
             .then(data =>{
                 this.setState({
                     record: data,
                 })
             })
+        fetch('/api/v1/tags')
+          .then(data => data.json())
+          .then(data => {
+              const existingTag = []
+              data.records.map(tag => existingTag.push({id: tag.id, value: tag.name,  text: tag.name}))
+              this.setState({
+                  optionTagArray: existingTag
+              })
+          })
     }
 
     handleChange = e => {
@@ -34,6 +46,37 @@ class AnswerNew extends Component{
         this.setState({
             [key]: newValue
         });
+    }
+    handleOnAdd = (e, {value}) => {
+        const {optionTagArray} = this.state
+
+        const newTag = optionTagArray.find(function (e) {
+            if (e.value == value[value.length - 1]){
+                return e
+            }
+        })
+        this.setState({
+            tag_id: [...this.state.tag_id, newTag]
+        })
+    }
+    renderAnswers = (answers) => {
+        return answers.map(answer => {
+            return (
+              <div key={answer["id"]}>
+                  <Comment.Group size="small">
+                      <Comment>
+                          <Comment.Avatar as='a' src='https://react.semantic-ui.com/images/avatar/small/joe.jpg' />
+                          <Comment.Content>
+                              <Comment.Metadata>
+                                  <span>Reply</span>
+                              </Comment.Metadata>
+                              <Comment.Text>{answer.content}</Comment.Text>
+                          </Comment.Content>
+                      </Comment>
+                  </Comment.Group>
+              </div>
+            )
+        })
     }
 
     handleSubmit = (e) => {
@@ -57,8 +100,14 @@ class AnswerNew extends Component{
                 this.props.history.push('/answers');
             });
     }
-
-    renderAnswer = () => {
+    renderTags = (tags) => {
+        return tags.map(tag => {
+            return (
+              <Label as='a' tag size="tiny" key={tag.id}>{tag.name}</Label>
+            )
+        })
+    }
+    renderQuestion = () => {
         const {record} = this.state
         return (
             <div key={record["id"]}>
@@ -67,6 +116,7 @@ class AnswerNew extends Component{
                         <Feed.Label image='https://react.semantic-ui.com/images/avatar/small/joe.jpg' />
                         <Feed.Content>
                             <Feed.Label>Name question: {record.name}</Feed.Label>
+                            <Feed.Label>{this.renderTags(record.tags)}</Feed.Label>
                             <Feed.Extra text>
                                 {record["content"]}
                             </Feed.Extra>
@@ -79,13 +129,21 @@ class AnswerNew extends Component{
     }
 
     render() {
-        const {record, content} = this.state
+        const {record, content, optionTagArray} = this.state
         return(
             <div>
                 <h1>Answer question</h1>
-                { record && this.renderAnswer()}
+                { record && this.renderQuestion()}
+                {record && this.renderAnswers(record.answers)}
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Field>
+                        <Dropdown placeholder='Tags'
+                                  fluid multiple selection
+                                  options={optionTagArray}
+                                  onChange={this.handleOnAdd}
+                                  style={{marginBottom: 10, marginTop: 10}}
+                        >
+                        </Dropdown>
                         <TextArea
                             placeholder='Tell us more'
                             onChange={this.handleChange}

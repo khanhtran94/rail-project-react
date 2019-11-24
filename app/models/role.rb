@@ -1,23 +1,21 @@
-class Tag < ApplicationRecord
-
-  #define relations
-  has_many :question_tags
-  has_many :questions, :through => :question_tags
+class Role < ApplicationRecord
+  has_many :users
 
   class << self
+
     def default_onlyasjsons
-      [:id, :name, :description, :created_ad, :updated_at]
+      [:id, :name]
     end
 
     def include_entities
       {
-          Question => [:questions]
+          User => [:users]
       }
     end
 
     def of_entities
       {
-          question: Question
+          user: User
       }
     end
 
