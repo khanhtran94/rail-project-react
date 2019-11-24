@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Form} from "semantic-ui-react";
+import {Button, Form, Select} from "semantic-ui-react";
 
 class UserEdit extends Component{
   constructor(props){
@@ -7,6 +7,7 @@ class UserEdit extends Component{
 
     this.state = {
       record: undefined,
+      optionRoleArray: [],
     }
     this.handleEdit = this.handleEdit.bind(this)
 
@@ -24,10 +25,10 @@ class UserEdit extends Component{
     fetch('/api/v1/roles')
       .then(data => data.json())
       .then(data => {
-        const existingTag = []
-        data.records.map(tag => existingTag.push({id: tag.id, value: tag.name,  text: tag.name}))
+        const existingRole = []
+        data.records.map(role => existingRole.push({id: role.id, value: role.name,  text: role.name}))
         this.setState({
-          optionTagArray: existingTag
+          optionRoleArray: existingRole
         })
       })
 
@@ -46,7 +47,7 @@ class UserEdit extends Component{
     e.preventDefault();
     const id = this.props.match.params.id
     let token = document.querySelector('meta[name="csrf-token"]').content;
-    fetch(`/api/v1/tags/${id}`, {
+    fetch(`/api/v1/users/${id}`, {
       method: 'PUT',
       headers: {
         "Content-Type": "application/json",
@@ -59,38 +60,55 @@ class UserEdit extends Component{
       .then(resp => {
         resp.json()
       })
-      .then(tag => {
-        this.props.history.push('/tags');
+      .then(user => {
+        this.props.history.push('/users');
       });
+  }
+
+  handleOnAdd = (e, {value}) => {
+    const {optionRoleArray} = this.state
+
+    const newRole = optionRoleArray.find(function (e) {
+      if (e.value == value[value.length - 1]){
+        return e
+      }
+    })
+    this.setState({
+      role_id: [...this.state.role_id, newRole]
+    })
   }
 
 
   render() {
-    const {name, description} = this.state
-    console.log(name)
-    console.log(description)
+    const {record, role_id, optionRoleArray} = this.state
+    console.log(optionRoleArray)
     return(
-      <Form onSubmit={this.handleEdit} style={{maxWidth: 600}}>
-        <Form.Field>
-          <label>Name</label>
-          <input placeholder='Name Tag'
-                 name='name'
-                 value={name}
-                 onChange={this.handleChange}
+      <div>
 
+      { record && <Form onSubmit={this.handleEdit} style={{maxWidth: 600}}>
+        <Form.Field>
+          <label>Email</label>
+          <input placeholder='Email'
+                 name='email'
+                 value={record.email}
+                 disabled={true}
           />
         </Form.Field>
 
         <Form.Field>
-          <label>Description</label>
-          <input placeholder='Description Tag'
-                 name='description'
-                 value={description}
-                 onChange={this.handleChange}
+          <label>Role</label>
+          <Select placeholder='Role'
+                  name='role'
+                  // value={record.role["name"]}
+                  options={optionRoleArray}
+                  onChange={this.handleOnAdd}
           />
         </Form.Field>
+
         <Button type='submit'>Submit</Button>
       </Form>
+      }
+      </div>
     )
   }
 }
