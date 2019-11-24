@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link }                           from 'react-router-dom'
 import {Button, Icon, Label, Menu, Table, Pagination} from "semantic-ui-react";
+import {FIELD} from "../Question/QuestionList";
 
 class TagList extends Component {
 
@@ -14,6 +15,8 @@ class TagList extends Component {
         }
         this.handleDelete = this.handleDelete.bind(this)
         this.deleteTag = this.deleteTag.bind(this)
+        this.handlePaginationChange = this.handlePaginationChange.bind(this)
+
     }
 
     componentDidMount() {
@@ -25,6 +28,18 @@ class TagList extends Component {
                 })
             })
     }
+
+    handlePaginationChange = (e, { activePage }) => {
+        const {data} = this.state
+        fetch(`/api/v1/tags?page=${activePage}`)
+          .then(data => data.json())
+          .then(data => {
+              this.setState({
+                  records: data.records,
+                  activePage: activePage,
+              })
+          })
+    };
 
     handleDelete (id){
         let token = document.querySelector('meta[name="csrf-token"]').content;
@@ -39,6 +54,10 @@ class TagList extends Component {
             }).then((response) => {
                 this.deleteTag(id)
         })
+          .then(question => {
+              window.location.reload();
+
+          });
     }
 
     deleteTag(id){
@@ -69,6 +88,7 @@ class TagList extends Component {
     };
 
     render() {
+        const {activePage, totalPages} = this.state
         return (
             <div style={{maxWidth: 1000}}>
                 <h1>Tag List</h1>
@@ -87,6 +107,7 @@ class TagList extends Component {
                         {this.renderTags()}
                     </Table.Body>
                 </Table>
+                <Pagination defaultActivePage={activePage} totalPages={totalPages} onPageChange={this.handlePaginationChange}/>
 
             </div>
         )
