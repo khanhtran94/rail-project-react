@@ -10,6 +10,11 @@ module Api
         render json: @record
       end
 
+      def check_user
+        @record = User.find current_user.id
+        render json: @record
+      end
+
       private
 
       def user_params

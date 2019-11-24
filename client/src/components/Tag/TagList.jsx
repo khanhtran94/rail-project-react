@@ -12,6 +12,7 @@ class TagList extends Component {
             records: [],
             activePage: 1,
             totalPages: 50,
+            current_user: undefined,
         }
         this.handleDelete = this.handleDelete.bind(this)
         this.deleteTag = this.deleteTag.bind(this)
@@ -27,6 +28,14 @@ class TagList extends Component {
                     records: data.records
                 })
             })
+      fetch('/api/v1/users/check_user')
+        .then(data => data.json())
+        .then( data => {
+          this.setState({
+            current_user: data
+          })
+        })
+
     }
 
     handlePaginationChange = (e, { activePage }) => {
@@ -61,7 +70,6 @@ class TagList extends Component {
     }
 
     deleteTag(id){
-        debugger
         const newTags = this.state.tags.filter((tag) => tag.id !== id)
         this.setState({
             tags: newTags
@@ -69,7 +77,7 @@ class TagList extends Component {
     }
 
     renderTags = () => {
-        const {records} = this.state
+        const {records, current_user} = this.state
         console.log(records)
         return records.map(record => {
             return (
@@ -77,30 +85,32 @@ class TagList extends Component {
                     <Table.Cell>{record["id"]}</Table.Cell>
                     <Table.Cell>{record["name"]}</Table.Cell>
                     <Table.Cell>{record["description"]}</Table.Cell>
+                  {current_user && current_user["role"] == 2 &&
                     <Table.Cell>
-                        <Button onClick={() => this.handleDelete(record["id"])}>Delete</Button>
-                        <Button href={`#/tags/edit/${record["id"]}`} >Edit</Button>
+                      <Button onClick={() => this.handleDelete(record["id"])}>Delete</Button>
+                      <Button href={`#/tags/edit/${record["id"]}`}>Edit</Button>
                     </Table.Cell>
-
+                  }
                 </Table.Row>
             )
         })
     };
 
     render() {
-        const {activePage, totalPages} = this.state
+        const {activePage, totalPages, current_user} = this.state
+
         return (
             <div style={{maxWidth: 1000}}>
                 <h1>Tag List</h1>
                 <br/>
-                <Button href="#/tags/new" primary size='mini'>Add a New Tag</Button>
+              {current_user && current_user["role"] == 2 && <Button href="#/tags/new" primary size='mini'>Add a New Tag</Button>}
                 <Table celled>
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell>Id</Table.HeaderCell>
                             <Table.HeaderCell>Name</Table.HeaderCell>
                             <Table.HeaderCell>Description</Table.HeaderCell>
-                            <Table.HeaderCell>Action</Table.HeaderCell>
+                          {current_user && current_user["role"] == 2 && <Table.HeaderCell>Action</Table.HeaderCell>}
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>

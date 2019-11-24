@@ -19,8 +19,12 @@ Rails.application.routes.draw do
       resources :tags
       resources :questions
       resources :answers
-      resources :users
+      resources :users do
+        collection do
+          get 'check_user'
+        end
+      end
       resources :roles
-    end 
+    end
   end
 end
