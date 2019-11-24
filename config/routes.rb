@@ -19,6 +19,8 @@ Rails.application.routes.draw do
       resources :tags
       resources :questions
       resources :answers
+      resources :users
+      resources :roles
     end 
   end
 end
