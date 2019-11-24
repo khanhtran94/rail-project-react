@@ -5,12 +5,12 @@ class AutoAnswerWorker
     _to_do = {}
     _done = {}
     # duyet qua cac cau hoi status: to do
-    questions_todo = Question.where(status_id: 1)
+    questions_todo = Question.where(status_id: 1).where(auto_answer: false)
     questions_todo.each do |question|
       _to_do["#{question.id}"] = question.tags.pluck(:id)
     end
     # lay nhung cau hoi done
-    questions_done = Question.where(status_id: 3).where(auto_ansert: false)
+    questions_done = Question.where(status_id: 3).where(auto_answer: false)
     questions_done.each do |question|
       _done["#{question.id}"] = question.tags.pluck(:id)
     end

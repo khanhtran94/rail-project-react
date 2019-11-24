@@ -25,14 +25,24 @@ user = User.first || User.create(email: 'test@test.com', password: 'password', p
 # posts.each do |post_hash|
 #   user.posts.create(post_hash)
 # end
+#
+# Status.create(name: 'ToDo')
+# Status.create(name: 'Doing')
+# Status.create(name: 'Done')
+#
+# Question.create(
+#             name: "Hoi ve hoc phi",
+#             content: "Em muon hoi lich nap hoc phi cua ki 2 nhom 2",
+#             user_id: 1,
+#             status_id: 1,
+# )
+#
+#
+# k = 28
+#
+# 5.times do |i|
+#   khoa = "khoa_#{k}"
+#   Tag.new(name: khoa, description: khoa).save
+#   k += 1
+# end
 
-Status.create(name: 'ToDo')
-Status.create(name: 'Doing')
-Status.create(name: 'Done')
-
-Question.create(
-            name: "Hoi ve hoc phi",
-            content: "Em muon hoi lich nap hoc phi cua ki 2 nhom 2",
-            user_id: 1,
-            status_id: 1,
-)

@@ -7,6 +7,11 @@ class User < ApplicationRecord
   has_many :questions
   belongs_to :role
 
+  before_validation :set_default_role
+
+  def set_default_role
+    self.role_id = 1
+  end
   class << self
     def default_onlyasjsons
       [:id, :email, :role_id]
