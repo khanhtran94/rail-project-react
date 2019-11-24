@@ -26,7 +26,7 @@ class UserEdit extends Component{
       .then(data => data.json())
       .then(data => {
         const existingRole = []
-        data.records.map(role => existingRole.push({id: role.id, value: role.name,  text: role.name}))
+        data.records.map(role => existingRole.push({id: role.id, value: role.id,  text: role.name}))
         this.setState({
           optionRoleArray: existingRole
         })
@@ -68,20 +68,15 @@ class UserEdit extends Component{
   handleOnAdd = (e, {value}) => {
     const {optionRoleArray} = this.state
 
-    const newRole = optionRoleArray.find(function (e) {
-      if (e.value == value[value.length - 1]){
-        return e
-      }
-    })
     this.setState({
-      role_id: [...this.state.role_id, newRole]
+      role_id: value
     })
   }
 
 
   render() {
     const {record, role_id, optionRoleArray} = this.state
-    console.log(optionRoleArray)
+    debugger
     return(
       <div>
 
@@ -99,7 +94,7 @@ class UserEdit extends Component{
           <label>Role</label>
           <Select placeholder='Role'
                   name='role'
-                  // value={record.role["name"]}
+                  defaultValue={record.role_id}
                   options={optionRoleArray}
                   onChange={this.handleOnAdd}
           />

@@ -5,6 +5,11 @@ module Api
         @entity_model = User
       end
 
+      def update
+        @record.update_attributes(role_id: params["role_id"])
+        render json: @record
+      end
+
       private
 
       def user_params
