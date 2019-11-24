@@ -100,10 +100,11 @@ class AnswerList extends Component{
     render() {
         const {activePage, totalPages, number, current_user} = this.state
         console.log(current_user)
+        debugger
         return(
             <div>
-                {current_user && current_user["role"] == 2 && <h1>Question ToDo List  {number}</h1>}
-                { current_user && current_user["role"] == 2 && <div>
+                {current_user && current_user["role_id"] == 2 && <h1>Question ToDo List  {number}</h1>}
+                { current_user && current_user["role_id"] == 2 && <div>
                     {this.renderQuestions()}
                     <Pagination defaultActivePage={activePage} totalPages={totalPages} onPageChange={this.handlePaginationChange}/>
                 </div>}

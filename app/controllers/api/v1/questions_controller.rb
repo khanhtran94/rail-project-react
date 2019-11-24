@@ -6,7 +6,6 @@ module Api
       end
 
       def create
-        puts params
         @record = @entity_model.new2nd(entity_params, current_user)
         if @record.save
           params["tag_id"].each do |tag_id|
@@ -27,7 +26,10 @@ module Api
       def update
         puts __method__
         question = Question.find(params[:id])
+
         question.update_attributes(question_params)
+
+        question.update_attributes(auto_answer: false ) if question.answers.count == 1
         render json: question
       end
 
