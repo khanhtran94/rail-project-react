@@ -12,6 +12,7 @@ class AnswerList extends Component{
             totalPages: 50,
             status: [1,2],
             number: 0,
+            current_user: undefined,
         }
         this.handlePaginationChange = this.handlePaginationChange.bind(this)
     }
@@ -39,6 +40,13 @@ class AnswerList extends Component{
                     number: data.filters.paging["record_total"]
                 })
             })
+        fetch('/api/v1/users/check_user')
+          .then(data => data.json())
+          .then( data => {
+              this.setState({
+                  current_user: data
+              })
+          })
     }
 
     renderQuestions = () => {
@@ -90,14 +98,15 @@ class AnswerList extends Component{
     }
 
     render() {
-        const {activePage, totalPages, number} = this.state
+        const {activePage, totalPages, number, current_user} = this.state
+        console.log(current_user)
         return(
             <div>
-                <h1>Question ToDo List  {number}</h1>
-                <div>
+                {current_user && current_user["role"] == 2 && <h1>Question ToDo List  {number}</h1>}
+                { current_user && current_user["role"] == 2 && <div>
                     {this.renderQuestions()}
                     <Pagination defaultActivePage={activePage} totalPages={totalPages} onPageChange={this.handlePaginationChange}/>
-                </div>
+                </div>}
             </div>
 
         )

@@ -10,7 +10,7 @@ class User < ApplicationRecord
   before_validation :set_default_role
 
   def set_default_role
-    self.role_id = 1
+    self.role_id ||= 1
   end
   class << self
     def default_onlyasjsons

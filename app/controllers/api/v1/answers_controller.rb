@@ -10,7 +10,7 @@ module Api
         if @record.save
           question = Question.find params["question_id"]
           question.status_id = 2
-          question.auto_answer = 1
+          question.auto_answer = false
           question.save
 
           params["tag_id"].each do |tag_id|

@@ -10,6 +10,7 @@ class QuestionEdit extends Component{
             question_id: this.props.match.params.id,
             optionTagArray: [],
             tag_id: [],
+            current_user: undefined,
         }
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleConfirm = this.handleConfirm.bind(this)
@@ -32,6 +33,13 @@ class QuestionEdit extends Component{
               data.records.map(tag => existingTag.push({id: tag.id, value: tag.name,  text: tag.name}))
               this.setState({
                   optionTagArray: existingTag
+              })
+          })
+        fetch('/api/v1/users/check_user')
+          .then(data => data.json())
+          .then( data => {
+              this.setState({
+                  current_user: data
               })
           })
 
@@ -94,7 +102,7 @@ class QuestionEdit extends Component{
     }
 
     renderQuestions = () => {
-        const {record} = this.state
+        const {record, current_user} = this.state
         return (
             <div key={record["id"]} style={{marginTop: 10}}>
                 <Feed>
@@ -114,7 +122,7 @@ class QuestionEdit extends Component{
                     </Feed.Event>
                 </Feed>
                 {this.renderAnswers(record.answers)}
-                {record.status["name"] !== 'Done' && <Button size='mini' icon="like" onClick={this.handleConfirm} id={record["id"]}></Button>}
+                {record.status["name"] !== 'Done' && current_user["id"] == record["user_id"] && <Button size='mini' icon="like" onClick={this.handleConfirm} id={record["id"]}></Button>}
             </div>
         )
 
@@ -158,15 +166,15 @@ class QuestionEdit extends Component{
     }
     // render ra form de submit
     render() {
-        const {record, content, optionTagArray, tag_id} = this.state
-        debugger
+        const {record, content, optionTagArray, tag_id, current_user} = this.state
+
         return(
             <div>
                 <h1>Question</h1>
                 <Form onSubmit={this.handleSubmit}>
 
                     {record && this.renderQuestions()}
-                    {record && record.status["name"] !== 'Done' && <Form.Field>
+                    {record && record.status["name"] !== 'Done' && current_user && current_user["id"] == record["user_id"] && <Form.Field>
                         <TextArea
                           placeholder='Tell us more'
                           onChange={this.handleChange}
@@ -174,7 +182,7 @@ class QuestionEdit extends Component{
                           name="content"
                         />
                     </Form.Field>}
-                    {record && record.status["name"] !== 'Done' && <Button type='submit'>Submit</Button>}
+                    {record && record.status["name"] !== 'Done' && current_user["id"] == record["user_id"]  && <Button type='submit'>Submit</Button>}
                 </Form>
             </div>
         )

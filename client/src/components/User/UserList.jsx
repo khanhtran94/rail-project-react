@@ -11,6 +11,7 @@ class UserList extends Component {
       records: [],
       activePage: 1,
       totalPages: 50,
+      current_user: undefined,
     }
   }
 
@@ -20,6 +21,13 @@ class UserList extends Component {
       .then(data => {
         this.setState({
           records: data.records
+        })
+      })
+    fetch('/api/v1/users/check_user')
+      .then(data => data.json())
+      .then( data => {
+        this.setState({
+          current_user: data
         })
       })
   }
@@ -44,24 +52,30 @@ class UserList extends Component {
   };
 
   render() {
-    return (
-      <div style={{maxWidth: 1000}}>
-        <h1>User List</h1>
-        <br/>
-        <Table celled>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Id</Table.HeaderCell>
-              <Table.HeaderCell>Email</Table.HeaderCell>
-              <Table.HeaderCell>Role</Table.HeaderCell>
-              <Table.HeaderCell>Action</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {this.renderUsers()}
-          </Table.Body>
-        </Table>
+    const  {current_user} = this.state
 
+    return (
+      <div>
+        { current_user && current_user["role"] == 2 &&
+        <div style={{maxWidth: 1000}}>
+          <h1>User List</h1>
+          <br/>
+          <Table celled>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>Id</Table.HeaderCell>
+                <Table.HeaderCell>Email</Table.HeaderCell>
+                <Table.HeaderCell>Role</Table.HeaderCell>
+                <Table.HeaderCell>Action</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {this.renderUsers()}
+            </Table.Body>
+          </Table>
+
+        </div>
+        }
       </div>
     )
   }
